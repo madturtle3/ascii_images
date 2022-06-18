@@ -45,26 +45,28 @@ def create_ascii_image(image, size=150, contrast=10, invert=False):
 
     xpix, ypix = image.size
     ypixels = round(xpix/ypix * photo_size * 2) # gotta round for that precision!
-    
     new_img = image.resize((ypixels, xpixels), Image.Resampling.LANCZOS)
     #new_img = new_img.convert("L")
-    new_img = ImageOps.grayscale(new_img)
-    imglist = new_img.getdata()
+    grey_img = ImageOps.grayscale(new_img).getdata()
     #imglist = reduce_background(imglist)
-    saturation = round(get_saturaiton(imglist) ** 1.25)
+    saturation = round(get_saturaiton(grey_img) ** 1.25)
 
     density = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{\}[]?-_+~<>i!lI;:,\"^`'.  "
     
     density += " " * contrast
+    iter_pixels = 0
     density = density[::-1]
     if invert:
         density = density[::-1]
-    for pixel in imglist:
+    for pixel in zip(grey_img):
         #ascii_val = round(((len(density) / 255) * pixel) - 1)
-        ascii_val = round(((len(density) / 255) * pixel)- 1)
-        ascii_photo += density[ascii_val]
-        if len(ascii_photo) % (ypixels + 1)== 0:
+        ascii_val = round(((len(density) / 255) * pixel[0])- 1)
+        ascii_photo += term.color_rgb(pixel[0], pixel[0], pixel[0]) + density[ascii_val] + term.normal
+        #ascii_photo += term.red + density[ascii_val] + term.normal
+        #ascii_photo += density[ascii_val]
+        if iter_pixels % (ypixels)== 0:
             ascii_photo += "\n"
+        iter_pixels += 1
     return ascii_photo
 
 term = blessed.Terminal()

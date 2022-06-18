@@ -1,8 +1,16 @@
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageFilter, ImageEnhance
 import argparse
 import blessed
 import cv2
 import asciilib
+
+
+"""
+Here's the deal:
+1. load image and convert to greyscale
+2. Convert to low res photo WITH same Aspect Ratio
+3. Convert to ascii based on intensity of pixel"""
+
 
 
 
@@ -13,7 +21,6 @@ log = open("log.txt", "a")
 parser = argparse.ArgumentParser()
 parser.add_argument("--size", "-S", type=int, help="Integer of X pixels", default=term.height)
 args = parser.parse_args()
-
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
     while True:
