@@ -1,7 +1,5 @@
-from PIL import Image, ImageOps, ImageFilter, ImageEnhance
-import argparse
+from PIL import Image, ImageOps, ImageEnhance, ImageFilter
 import blessed
-import cv2
 
 def echo(text):
     print(text, end="", flush=True)
@@ -61,7 +59,7 @@ def create_ascii_color_image(image, size=150, invert=False):
         iter_pixels += 1
     return ascii_photo
 
-def create_ascii_image(image, size=150, contrast=10, invert=False):
+def create_ascii_image(image, size=150, contrast=10):
     term = blessed.Terminal()
     ascii_photo = ""
     photo_size = size
@@ -80,8 +78,6 @@ def create_ascii_image(image, size=150, contrast=10, invert=False):
     density += " " * contrast
     iter_pixels = 0
     density = density[::-1]
-    if invert:
-        density = density[::-1]
     for pixel in zip(grey_img):
         #ascii_val = round(((len(density) / 255) * pixel) - 1)
         ascii_val = round(((len(density) / 255) * pixel[0])- 1)
