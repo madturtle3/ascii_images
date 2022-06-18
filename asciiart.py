@@ -1,9 +1,12 @@
+#!/usr/bin/env python
 from PIL import Image, ImageOps
 import argparse
 import blessed
 import cv2
-import asciilib
-
+import sys
+import os
+sys.path.append(os.path.abspath(__file__))
+from asciilib import create_ascii_color_image, create_ascii_image, echo
 
 term = blessed.Terminal()
 parser = argparse.ArgumentParser()
@@ -13,14 +16,12 @@ parser.add_argument("--color", "-C", type=str, choices=["c", "g"], default="g", 
 parser.add_argument("--size", "-S", type=int, help="height of image displayed. Default is terminal height.", default=term.height)
 args = parser.parse_args()
 
-
-
 if args.mode == "p":
     im_pil = Image.open(args.filename)
     if args.color == "g":
-        print(asciilib.create_ascii_image(im_pil, args.size))
+        print(create_ascii_image(im_pil, args.size))
     elif args.color == "c":
-        print(asciilib.create_ascii_color_image(im_pil, args.size))
+        print(create_ascii_color_image(im_pil, args.size))
 
 
 elif args.mode == "v":
@@ -31,13 +32,13 @@ elif args.mode == "v":
     with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
         while True:
-            asciilib.echo(
+            echo(
             term.move_yx(0,0))
             code, frame = feed.read()
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             im_pil = Image.fromarray(img)
             im_pil = ImageOps.mirror(im_pil)
             if args.color == "g":
-                print(asciilib.create_ascii_image(im_pil, args.size))
+                print(create_ascii_image(im_pil, args.size))
             elif args.color == "c":
-                print(asciilib.create_ascii_color_image(im_pil, args.size))
+                print(create_ascii_color_image(im_pil, args.size))

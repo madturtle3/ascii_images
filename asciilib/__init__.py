@@ -31,7 +31,7 @@ def create_ascii_color_image(image, size=150, invert=False):
 
     xpix, ypix = image.size
     ypixels = round(xpix/ypix * photo_size * 2) # gotta round for that precision!
-    new_img = image.resize((ypixels, xpixels), Image.Resampling.LANCZOS)
+    new_img = image.resize((ypixels, xpixels))
     #new_img = new_img.convert("L")
     grey_img = ImageOps.grayscale(new_img).getdata()
 
