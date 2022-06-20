@@ -6,7 +6,7 @@ import cv2
 import sys
 import os
 sys.path.append(os.path.abspath(__file__))
-from asciilib import create_ascii_color_image, create_ascii_image, echo
+from asciilib_html import create_ascii_color_image, create_ascii_image, echo
 
 term = blessed.Terminal()
 parser = argparse.ArgumentParser()
@@ -14,7 +14,7 @@ parser.add_argument("filename", type=str, help="filename to use. If webcam, use 
 parser.add_argument("--mode", "-M", type=str, choices=["v", "p"], default="p", help="Mode of terminal. Either <v>ideo or <p>icture")
 parser.add_argument("--color", "-C", type=str, choices=["c", "g"], default="g", help="color type. <g>reyscalse or <c>olor")
 parser.add_argument("--size", "-S", type=int, help="height of image displayed. Default is terminal height.", default=term.height)
-args = parser.parse_args() 
+args = parser.parse_args()
 
 if args.mode == "p":
     im_pil = Image.open(args.filename)
