@@ -73,7 +73,7 @@ def create_ascii_image(image, size=150, contrast=10):
     #imglist = reduce_background(imglist)
     saturation = round(get_saturaiton(grey_img) ** 1.25)
 
-    density = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{\}[]?-_+~<>i!lI;:,\"^`'.  "
+    density = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{\}[]?-_+~<>i!lI;:,\"^`'."
     
     density += " " * contrast
     iter_pixels = 0
