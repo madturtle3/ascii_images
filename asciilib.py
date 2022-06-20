@@ -49,7 +49,7 @@ def create_ascii_color_image(image, size=150, invert=False):
         #ascii_val = round(((len(density) / 255) * pixel) - 1)
         ascii_val = round(((len(density) / 255) * pixel)- 1)
         if invert:
-            ascii_photo += term.on_color_rgb(cpixel[0], cpixel[1], cpixel[2]) + density[ascii_val] + term.normal
+            ascii_photo += term.color_rgb(cpixel[0], cpixel[1], cpixel[2]) + density[ascii_val] + term.normal
         else:
             ascii_photo += term.color_rgb(cpixel[0], cpixel[1], cpixel[2]) + density[ascii_val] + term.normal
         #ascii_photo += term.red + density[ascii_val] + term.normal

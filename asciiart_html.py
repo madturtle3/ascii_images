@@ -14,6 +14,8 @@ parser.add_argument("filename", type=str, help="filename to use. If webcam, use 
 parser.add_argument("--mode", "-M", type=str, choices=["v", "p"], default="p", help="Mode of terminal. Either <v>ideo or <p>icture")
 parser.add_argument("--color", "-C", type=str, choices=["c", "g"], default="g", help="color type. <g>reyscalse or <c>olor")
 parser.add_argument("--size", "-S", type=int, help="height of image displayed. Default is terminal height.", default=term.height)
+parser.add_argument("--invert", "-I", type=str, help="invert image or no", default="no")
+
 args = parser.parse_args()
 
 if args.mode == "p":
@@ -21,8 +23,11 @@ if args.mode == "p":
     if args.color == "g":
         print(create_ascii_image(im_pil, args.size))
     elif args.color == "c":
-        print(create_ascii_color_image(im_pil, args.size))
+        if args.invert == 'y':
 
+            print(create_ascii_color_image(im_pil, args.size, invert=True))
+        else:
+            print(create_ascii_color_image(im_pil, args.size, invert=False))
 
 elif args.mode == "v":
     if not args.filename.isdigit():
