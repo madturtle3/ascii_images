@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(__file__))
 from asciilib import create_ascii_color_image, create_ascii_image, echo
 
 term = blessed.Terminal()
+term.number_of_colors(1 << 24)
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", type=str, help="filename to use. If webcam, use 0.")
 parser.add_argument("--mode", "-M", type=str, choices=["v", "p"], default="p", help="Mode of terminal. Either <v>ideo or <p>icture")
