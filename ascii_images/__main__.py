@@ -21,17 +21,18 @@ parser.add_argument("--mode", "-M", type=str, choices=[
 parser.add_argument("--color", "-C", type=str, choices=[
                     "c", "g", "m"], default="g", help="color type. <g>reyscalse or <c>olor")
 parser.add_argument("--size", "-S", type=int,
-                    help="height of image displayed. Default is terminal height.", default=term.height)
+                    help="height of image displayed. Default is terminal height.", default=term.height-3)
 parser.add_argument(
     "--invert", "-I", help="invert image or no", action="store_true")
 parser.add_argument("--contrast", "-O", type=int,
-                    help="set contrast on monochromatic images", default=10)
+                    help="set contrast on monochromatic images", default=0)
 parser.add_argument("--framerate", "-F",
                     help="framerate of camera. Default is 30.", default=30, type=int)
 
 args = parser.parse_args()
 crop = [0, 0, 100, 100]
 
+cropdat = False
 if args.mode == "p":
     im_pil = Image.open(args.filename)
     if args.color == "g":
@@ -44,7 +45,6 @@ if args.mode == "p":
             print(create_ascii_color_image(im_pil, args.size, invert=False))
     elif args.color == "m":
         print(create_ascii_mono_image(im_pil, args.size, args.contrast, args.invert))
-
 
 elif args.mode == "v":
     frame_period = 1 / args.framerate
@@ -71,7 +71,8 @@ elif args.mode == "v":
             elif key == "w":
                 args.contrast += 5
             elif key == "s":
-                args.contrast -= 5
+                if args.contrast > 0:
+                    args.contrast -= 5
             elif key == "a":
                 if args.size > 1 or args.size > term.height:
                     args.size -= 1
@@ -112,6 +113,9 @@ elif args.mode == "v":
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 im_pil = Image.fromarray(img)
                 og_size = im_pil.size
+                if not cropdat:
+                    crop = [0, 0, og_size[0], og_size[1]]
+                    cropdat = True
                 im_pil = ImageOps.mirror(im_pil)
                 im_pil = im_pil.crop(crop)
                 if override:
@@ -129,6 +133,6 @@ elif args.mode == "v":
                 last_iter = time.time()
                 override = False
 
-            if key == "s":
+            if key == "p":
                 with open("picture.txt", "w") as picturefile:
                     picturefile.write(text)
