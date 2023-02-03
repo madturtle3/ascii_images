@@ -95,7 +95,7 @@ def create_ascii_image(image, size=150, contrast=10, invert=False):
         iter_pixels += 1
     return ascii_photo
 
-def create_ascii_mono_image(image, size=150, contrast=10):
+def create_ascii_mono_image(image, size=150, contrast=10, invert=False):
     if type(image) == str:
         image = Image.open(image)
     term = blessed.Terminal()
@@ -107,6 +107,8 @@ def create_ascii_mono_image(image, size=150, contrast=10):
     ypixels = round(xpix/ypix * photo_size * 2) # gotta round for that precision!
     new_img = image.resize((ypixels, xpixels))
     #new_img = new_img.convert("L")
+    if invert:
+        new_img = new_img.filter(ImageFilter.FIND_EDGES)
     grey_img = ImageOps.grayscale(new_img).getdata()
     #imglist = reduce_background(imglist)
     saturation = round(get_saturaiton(grey_img) ** 1.25)

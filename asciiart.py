@@ -43,7 +43,7 @@ if args.mode == "p":
         else:
             print(create_ascii_color_image(im_pil, args.size, invert=False))
     elif args.color == "m":
-        print(create_ascii_mono_image(im_pil, args.size, args.contrast))
+        print(create_ascii_mono_image(im_pil, args.size, args.contrast, args.invert))
 
 
 elif args.mode == "v":
@@ -69,9 +69,9 @@ elif args.mode == "v":
             if key == " ":
                 spaced = not spaced
             elif key == "w":
-                args.contrast += 1
+                args.contrast += 5
             elif key == "s":
-                args.contrast -= 1
+                args.contrast -= 5
             elif key == "a":
                 if args.size > 1 or args.size > term.height:
                     args.size -= 1
@@ -123,9 +123,8 @@ elif args.mode == "v":
                     text = create_ascii_color_image(
                         im_pil, args.size, invert=args.invert)
                 elif args.color == "m":
-                    im_pil = im_pil.filter(ImageFilter.EDGE_ENHANCE_MORE)
                     text = create_ascii_mono_image(
-                        im_pil, args.size, args.contrast)
+                        im_pil, args.size, args.contrast, invert=args.invert)
                 print(text)
                 last_iter = time.time()
                 override = False
