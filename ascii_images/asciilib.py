@@ -26,6 +26,7 @@ Here's the deal:
 def create_ascii_color_image(image, size=150, invert=False):
     if type(image) == str:
         image = Image.open(image)
+    image = image.convert("RGB")
     term = blessed.Terminal()
     ascii_photo = ""
     photo_size = size

@@ -8,6 +8,7 @@ import sys
 import os
 import time
 import numpy
+from urllib.request import urlopen
 sys.path.append(os.path.abspath(__file__))
 
 
@@ -28,13 +29,18 @@ parser.add_argument("--contrast", "-O", type=int,
                     help="set contrast on monochromatic images", default=0)
 parser.add_argument("--framerate", "-F",
                     help="framerate of camera. Default is 30.", default=30, type=int)
-
+parser.add_argument("--url","-U",help="use URL instead of filename",default=True,type=bool)
 args = parser.parse_args()
 crop = [0, 0, 100, 100]
 
 cropdat = False
 if args.mode == "p":
-    im_pil = Image.open(args.filename)
+    if args.url:
+        with urlopen(args.filename) as rawfile:
+            im_pil = Image.open(rawfile)
+    else:
+        im_pil = Image.open(args.filename)
+    im_pil = im_pil.convert("RGB")
     if args.color == "g":
         print(create_ascii_image(im_pil, args.size, invert=args.invert))
     elif args.color == "c":
